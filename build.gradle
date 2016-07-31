@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "spring-boot"
+
+jar {
+    baseName = "spring-ddd"
+    version =  "0.1.0"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+def springBootVersion = "1.4.0.RELEASE"
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-validation:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
+    compile("org.projectlombok:lombok:1.16.8")
+    compile("com.google.guava:guava:19.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "2.14"
+}
+
+// see: http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html
+bootRun {
+    // watches resources dir
+    addResources = true
+}
+
+bootRepackage {
+    mainClass = "hello.Application"
+    executable = true // default false
+}
